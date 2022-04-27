@@ -11,6 +11,11 @@ import lombok.Data;
 @Data
 public class VerifyUserResponse {
     /**
+     * id
+     */
+    @ApiModelProperty(value = "id")
+    private String id;
+    /**
      * 学校名称
      */
     @ApiModelProperty(value = "学校名称")
@@ -34,7 +39,7 @@ public class VerifyUserResponse {
      * 学号/工号
      */
     @ApiModelProperty(value = "学号/工号")
-    private String workId;
+    private String workID;
     /**
      * 学院
      */

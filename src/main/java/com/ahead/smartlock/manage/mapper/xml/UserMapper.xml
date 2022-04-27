@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ahead.smartlock.manage.mapper.UserMapper">
+
+    <sql id="condition">
+        <if test="filter.status != '' and filter.status != null">
+            AND u.status = #{filter.status}
+        </if>
+        <if test="filter.name != '' and filter.name != null">
+            AND u.name LIKE concat('%',#{filter.name},'%')
+        </if>
+        <if test="filter.phone != '' and filter.phone != null">
+            AND u.telephone_number LIKE concat('%',#{filter.phone},'%')
+        </if>
+    </sql>
+
+    <select id="getCount" resultType="Long">
+        SELECT
+        COUNT(*)
+        FROM
+        user AS u LEFT JOIN college_info AS college ON u.college_id = college.id
+        LEFT JOIN class_info AS class ON u.class_id = class.id
+        <where>
+            <include refid="condition"/>
+        </where>
+    </select>
+
+    <select id="searchPage" resultType="com.ahead.smartlock.manage.response.VerifyUserResponse">
+        SELECT
+        u.id,
+        u.name,
+        u.sex,
+        u.telephone_number AS telephoneNumber,
+        u.workID AS workID,
+        college.name AS college,
+        class.name AS className,
+        u.building_id AS buildingId,
+        u.dormitory_id AS dormitory,
+        u.status
+        FROM
+        user AS u LEFT JOIN college_info AS college ON u.college_id = college.id
+        LEFT JOIN class_info AS class ON u.class_id = class.id
+        <where>
+            <include refid="condition"/>
+        </where>
+        LIMIT
+        #{startIndex},#{size}
+    </select>
+
+</mapper>

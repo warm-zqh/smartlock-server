@@ -57,7 +57,7 @@ public class VerifyUserController {
     @PostMapping("/delete/{id}")
     @ApiOperation(value = "删除")
     @ApiImplicitParam(name = "id", value = "ID", type = "path", required = true, dataTypeClass = String.class)
-    public Result<Boolean> delete(@Valid @PathVariable("id") Long id) {
+    public Result<Boolean> delete(@Valid @PathVariable("id") String id) {
         return Result.success(iUserService.removeById(id));
     }
 }

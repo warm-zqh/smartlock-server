@@ -35,6 +35,10 @@
             <artifactId>knife4j-spring-boot-starter</artifactId>
             <version>3.0.2</version>
         </dependency>
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-thymeleaf</artifactId>
+        </dependency>
 
         <dependency>
             <groupId>org.springframework.boot</groupId>
@@ -90,6 +94,8 @@
                     <include>*.yaml</include>
                     <include>*.properties</include>
                     <include>*.xml</include>
+                    <include>**/*.html</include>
+                    <include>static/**</include>
                 </includes>
             </resource>
         </resources>

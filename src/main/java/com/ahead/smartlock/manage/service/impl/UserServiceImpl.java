@@ -27,9 +27,17 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements IU
 
     @Override
     public Page<VerifyUserResponse> getPage(Long page, Long size, VerifyUserPageFilterParam filterParam) {
-        Page<VerifyUserResponse> responsePage = DataConverterUtils.convertPage(userMapper.selectPage(new Page<>(page, size), new LambdaQueryWrapper<User>()
-                .like(StringUtils.hasText(filterParam.getName()), User::getName, filterParam.getName()).or()
-                .like(StringUtils.hasText(filterParam.getPhone()), User::getTelephoneNumber, filterParam.getPhone()).or()
+        //计算查询分页开始页
+        if (page < 1L) {
+            page = 1L;
+        }
+        Long startIndex = (page - 1) * size;
+        List<VerifyUserResponse> responses = userMapper.searchPage(startIndex, size, filterParam);
+        Long count = userMapper.getCount(filterParam);
+        return DataConverterUtils.convertPage(responses, page, size, count);
+/*        Page<VerifyUserResponse> responsePage = DataConverterUtils.convertPage(userMapper.selectPage(new Page<>(page, size), new LambdaQueryWrapper<User>()
+                .like(StringUtils.hasText(filterParam.getName()), User::getName, filterParam.getName())
+                .like(StringUtils.hasText(filterParam.getPhone()), User::getTelephoneNumber, filterParam.getPhone())
                 .like(StringUtils.hasText(filterParam.getStatus()), User::getStatus, filterParam.getStatus())), VerifyUserResponse.class);
         //宿舍信息
         List<String> dormitoryIds = responsePage.getRecords().stream().map(VerifyUserResponse::getDormitoryId).distinct().collect(Collectors.toList());
@@ -40,6 +48,6 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements IU
         responsePage.getRecords().forEach(response -> {
             // TODO 宿舍 班级 学院信息
         });
-        return responsePage;
+        return responsePage;*/
     }
 }
